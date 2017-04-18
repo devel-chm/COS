@@ -144,28 +144,28 @@ foreach my $in ( @infiles ) {
 # add non-option files to @filelist
 @filelist = (@filelist,@ARGV) if @ARGV;
 
-token='[A-Za-z_][A-Za-z0-9_]*'
-prefix='[cdgm]'
+$token = '[A-Za-z_][A-Za-z0-9_]*';
+$prefix = '[cdgm]';
 
-if [ "$rmdoc" != "" ] ; then
-  prefix='[cgm]'
-fi
+if ($rmdoc) {
+    $prefix = '[cgm]';
+}
 
 # retrieve symbols
-if [ "$filelist" != "" ] ; then
-    sym=`$nm $filelist \
-       | grep -E -e "^_?cos_($prefix)_($token) D " \
-   	   | cut  -f 1 -d ' ' \
-			 | sed  -e 's/^_cos/cos/g' \
-       | sort -u`
-    if [ "$rmcls" != "" ] ; then
-		lnk=`$nm $filelist \
-       | grep -E -e "^_?cos_l_($token) B " \
-       | cut  -f 1 -d ' ' \
-			 | sed  -e 's/^_cos/cos/g' \
-       | sort -u`
-    fi
-fi
+if ( @filelist ) {
+    $sym=`$nm $filelist \
+    | grep -E -e "^_?cos_($prefix)_($token) D " \
+    | cut  -f 1 -d ' ' \
+    | sed  -e 's/^_cos/cos/g' \
+    | sort -u`
+    if ( @rmcls ) {
+        $lnk=`$nm $filelist \
+        | grep -E -e "^_?cos_l_($token) B " \
+        | cut  -f 1 -d ' ' \
+        | sed  -e 's/^_cos/cos/g' \
+        | sort -u`
+    }
+}
 
 # remove generic patterns
 if [ "$rmgen" != "" ] ; then
@@ -273,7 +273,7 @@ fi
 
 mkdir -p `dirname $out`
 
-cat > $out <<END-OF-TEXT
+cat > $out <<"END_OF_TEXT" ;
 /*
  * -----------------------------
  * COS symbols
@@ -284,7 +284,7 @@ cat > $out <<END-OF-TEXT
  * -----------------------------
  */
 
-END-OF-TEXT
+END_OF_TEXT
 
 # output extern declarations
 for s in $sym ; do
@@ -299,19 +299,19 @@ for s in $sym ; do
     echo "  &$s,"                      >> $out
 done
 
-cat >> $out <<END-OF-TEXT
+cat >> $out <<"END_OF_TEXT" ;
   0
 };
 
 void cos_symbol_register(struct Any**, const char*);
 
-END-OF-TEXT
+END_OF_TEXT
 
 for m in $modlist ; do
   echo "void cos_symbol_init$m(void);"    >> $out
 done
 
-cat >> $out <<END-OF-TEXT
+cat >> $out <<"END_OF_TEXT" ;
 
 void cos_symbol_init$modname(void);
 void cos_symbol_init$modname(void)
@@ -320,17 +320,17 @@ void cos_symbol_init$modname(void)
    
    if (!done) {
      done = 1;
-END-OF-TEXT
+END_OF_TEXT
 
 for m in $modlist ; do
   echo "     cos_symbol_init$m();"        >> $out
 done
 
-cat >> $out <<END-OF-TEXT
+cat >> $out <<"END_OF_TEXT" ;
      cos_symbol_register(symtbl,"$prjname");
    }
 }
-END-OF-TEXT
+END_OF_TEXT
 
 ##### Enf of _cossym.c #####
 
