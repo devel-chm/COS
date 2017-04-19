@@ -35,10 +35,13 @@ $datestr=scalar localtime();
 $modlist='';
 $modname='';
 $prjname='';
+@rmgen=();
 $rmgen='';
+@rmcls=();
 $rmcls='';
 $rmdoc='';
 $rmtrc='';
+$rmlst='';
 
 # helper
 sub usage() {
@@ -153,127 +156,128 @@ if ($rmdoc) {
 
 # retrieve symbols
 if ( @filelist ) {
-    $sym=`$nm $filelist \
-    | grep -E -e "^_?cos_($prefix)_($token) D " \
-    | cut  -f 1 -d ' ' \
-    | sed  -e 's/^_cos/cos/g' \
-    | sort -u`
+    $sym=qx($nm @filelist);  # make sure no \n stuff
+    # grep -E -e "^_?cos_($prefix)_($token) D " \
+    # cut  -f 1 -d ' ' \
+    # sed  -e 's/^_cos/cos/g' \
+    # sort -u`);
     if ( @rmcls ) {
-        $lnk=`$nm $filelist \
-        | grep -E -e "^_?cos_l_($token) B " \
-        | cut  -f 1 -d ' ' \
-        | sed  -e 's/^_cos/cos/g' \
-        | sort -u`
+        $lnk=qx($nm @filelist);  # make sure no \n stuff
+        # grep -E -e "^_?cos_l_($token) B " \
+        # cut  -f 1 -d ' ' \
+        # sed  -e 's/^_cos/cos/g' \
+        # sort -u`);
     }
 }
 
 # remove generic patterns
-if [ "$rmgen" != "" ] ; then
-    for pat in $rmgen ; do
+if ( @rmgen ) {
+    foreach my $pat (@rmgen) {
 #       extract generics
-        if [ "$rmtrc" = "Y" ] ; then
-            gen=`echo $sym \
-               | tr ' ' '\n' \
-               | grep -E -e "^cos_g_($pat)$" \
-               | sed  -e 's/^cos_g_//g'`
-            rmlst="$rmlst $gen"
-        fi
+        if ( $rmtrc ) {
+            $gen = qx( echo $sym \
+            | tr ' ' '\n' \
+            | grep -E -e "^cos_g_($pat)$" \
+            | sed  -e 's/^cos_g_//g');
+            $rmlst="$rmlst $gen";
+        }
 #       remove generic pattern
-        sym=`echo $sym \
-           | tr ' ' '\n' \
-           | grep -E -v -e "^cos_g_($pat)$" \
-           | grep -E -v -e "^cos_m_($pat)_"`
-    done
+        $sym = qx(echo $sym \
+        | tr ' ' '\n' \
+        | grep -E -v -e "^cos_g_($pat)$" \
+        | grep -E -v -e "^cos_m_($pat)_");
+    }
 
 #   display removed generics
-    rmlst=`echo $rmlst`
-    if [ "$rmlst" != "" ] ; then
-        echo '** Removed generics:' >&2
-        echo `echo $rmlst` >&2
-        rmlst=
-    fi
-fi
+    $rmlst = qx(echo $rmlst);
+    if ( $rmlst ) {
+        # echo '** Removed generics:' >&2
+        # echo `echo $rmlst` >&2
+        $rmlst = '';
+    }
+}
 
 # remove class patterns and subclasses
-if [ "$rmcls" != "" ] ; then
-    for pat in $rmcls ; do
+if ( @rmcls ) {
+    foreach my $pat (@rmcls) {
 #       extract classes
-        if [ "$rmtrc" = "Y" ] ; then
-            cls=`echo $sym \
-               | tr ' ' '\n' \
-               | grep -E -e "^cos_c_($pat)$" \
-               | sed  -e 's/^cos_c_//g'`
-            rmlst="$rmlst $cls"
-        fi
+        if ( $rmtrc ) {
+            $cls = qx(echo $sym \
+            | tr ' ' '\n' \
+            | grep -E -e "^cos_c_($pat)$" \
+            | sed  -e 's/^cos_c_//g');
+            $rmlst = "$rmlst $cls";
+        }
 #       extract subclasses
-        sub=`echo $lnk \
-           | tr ' ' '\n' \
-           | grep -E -e "^cos_l_($pat)__isSuperOf__" \
-           | sed  -e "s/^cos_l_${token}__isSuperOf__//g"`
-        sublst="$sublst $sub"
+        $subcls = qx(echo $lnk \
+        | tr ' ' '\n' \
+        | grep -E -e "^cos_l_($pat)__isSuperOf__" \
+        | sed  -e "s/^cos_l_${token}__isSuperOf__//g");
+        $sublst = "$sublst $subcls";
 # DEBUG echo "sublst:" `echo $sublst` >&2
 #       remove link pattern
-        lnk=`echo $lnk \
-           | tr ' ' '\n' \
-           | grep -E -v -e "^cos_l_($pat)__isSuperOf__"`
+        $lnk = qx(echo $lnk \
+        | tr ' ' '\n' \
+        | grep -E -v -e "^cos_l_($pat)__isSuperOf__");
 #       remove class pattern
-        sym=`echo $sym \
-           | tr ' ' '\n' \
-           | grep -E -v -e "^cos_c_(|m|pm)($pat)$" \
-           | grep -E -v -e "^cos_m_($token)_(|m|pm)($pat)(_|$)"`
-    done
+        $sym = qx(echo $sym \
+        | tr ' ' '\n' \
+        | grep -E -v -e "^cos_c_(|m|pm)($pat)$" \
+        | grep -E -v -e "^cos_m_($token)_(|m|pm)($pat)(_|$)");
+    }
 
 #   display removed classes
-    rmlst=`echo $rmlst`
-    if [ "$rmlst" != "" ] ; then
-        echo '** Removed classes:' >&2
-        echo `echo $rmlst` >&2
-        rmlst=
-    fi
+    $rmlst = qx(echo $rmlst);
+    if ( $rmlst ) {
+        # echo '** Removed classes:' >&2
+        # echo `echo $rmlst` >&2
+        $rmlst = '';
+    }
 
 #   remove subclasses
-    sublst=`echo $sublst`
-    while [ "$sublst" != "" ] ; do
+    $sublst = qx(echo $sublst);
+    while ( $sublst ) {
 #       add subclasses to removed classes
-        if [ "$rmtrc" = "Y" ] ; then
-            rmlst="$rmlst $sublst"
-        fi
+        if ( $rmtrc ) {
+            $rmlst = "$rmlst $sublst";
+        }
 #       build subclass pattern
-        pat=`echo $sublst \
-           | sed -e 's/ /\|/g'`
+        $pat = qx(echo $sublst | sed -e 's/ /\|/g');
 # DEBUG echo "pat: $pat" >&2
 #       extract subclasses
-        sub=`echo $lnk \
-           | tr ' ' '\n' \
-           | grep -E -e "^cos_l_($pat)__isSuperOf__" \
-           | sed  -e "s/^cos_l_${token}__isSuperOf__//g"`
-        sublst="$sub"
+        $subcls = qx(echo $lnk \
+        | tr ' ' '\n' \
+        | grep -E -e "^cos_l_($pat)__isSuperOf__" \
+        | sed  -e "s/^cos_l_${token}__isSuperOf__//g");
+        $sublst = "$subcls";
 # DEBUG echo "sublst:" `echo $sublst` >&2
 #       remove link pattern
-        lnk=`echo $lnk \
-           | tr ' ' '\n' \
-           | grep -E -v -e "^cos_l_($pat)__isSuperOf__"`
+        $lnk = qx(echo $lnk \
+        | tr ' ' '\n' \
+        | grep -E -v -e "^cos_l_($pat)__isSuperOf__");
 #       remove subclass pattern
-        sym=`echo $sym \
-           | tr ' ' '\n' \
-           | grep -E -v -e "^cos_c_(|m|pm)($pat)$" \
-           | grep -E -v -e "^cos_m_($token)_(|m|pm)($pat)(_|$)"`
-    done
+        $sym = qx(echo $sym \
+        | tr ' ' '\n' \
+        | grep -E -v -e "^cos_c_(|m|pm)($pat)$" \
+        | grep -E -v -e "^cos_m_($token)_(|m|pm)($pat)(_|$)");
+    }
 
 #   display removed subclasses
-    rmlst=`echo $rmlst`
-    if [ "$rmlst" != "" ] ; then
-        echo '** Removed subclasses:' >&2
-        echo `echo $rmlst` >&2
-        rmlst=
-    fi
-fi
+    $rmlst = qx(echo $rmlst);
+    if ( $rmlst ) {
+        # echo '** Removed subclasses:' >&2
+        # echo `echo $rmlst` >&2
+        $rmlst = '';
+    }
+}
 
 ##### Start of _cossym.c #####
 
-mkdir -p `dirname $out`
+mkpath( dirname($out) );
 
-cat > $out <<"END_OF_TEXT" ;
+open(my $outfh, ">", "$out") or die "cannot open > '$out': $!";
+
+print $outfh <<"END_OF_TEXT" ;
 /*
  * -----------------------------
  * COS symbols
@@ -287,19 +291,19 @@ cat > $out <<"END_OF_TEXT" ;
 END_OF_TEXT
 
 # output extern declarations
-for s in $sym ; do
-    echo "extern struct Any $s;"       >> $out
-done
-echo                                   >> $out
+# for s in $sym ; do
+#     echo "extern struct Any $s;"       >> $out
+# done
+# echo                                   >> $out
 
 # output table definition
-echo 'static struct Any* symtbl[] = {' >> $out
+# echo 'static struct Any* symtbl[] = {' >> $out
+# 
+# for s in $sym ; do
+#     echo "  &$s,"                      >> $out
+# done
 
-for s in $sym ; do
-    echo "  &$s,"                      >> $out
-done
-
-cat >> $out <<"END_OF_TEXT" ;
+print $outfh <<"END_OF_TEXT" ;
   0
 };
 
@@ -307,11 +311,11 @@ void cos_symbol_register(struct Any**, const char*);
 
 END_OF_TEXT
 
-for m in $modlist ; do
-  echo "void cos_symbol_init$m(void);"    >> $out
-done
+# for m in $modlist ; do
+#   echo "void cos_symbol_init$m(void);"    >> $out
+# done
 
-cat >> $out <<"END_OF_TEXT" ;
+print $outfh <<"END_OF_TEXT" ;
 
 void cos_symbol_init$modname(void);
 void cos_symbol_init$modname(void)
@@ -322,16 +326,17 @@ void cos_symbol_init$modname(void)
      done = 1;
 END_OF_TEXT
 
-for m in $modlist ; do
-  echo "     cos_symbol_init$m();"        >> $out
-done
+# for m in $modlist ; do
+#   echo "     cos_symbol_init$m();"        >> $out
+# done
 
-cat >> $out <<"END_OF_TEXT" ;
+print $outfh <<"END_OF_TEXT" ;
      cos_symbol_register(symtbl,"$prjname");
    }
 }
 END_OF_TEXT
 
 ##### Enf of _cossym.c #####
+close($outfh);
 
 # end of script
