@@ -2,6 +2,14 @@
 .project
 .cproject
 
+CYGWIN_NT-6.1
+Darwin
+Default
+FreeBSD
 Linux
+SunOS
+
 doc/api
 INSTALLED_FILES
+
+*~
