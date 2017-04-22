@@ -25,7 +25,7 @@ use File::Path;
 
 # default settings
 $progname=basename($0);
-$cpp="ucpp -I."; # "cc -E -I."
+$cpp="cc -E -I."; # "ucpp -I.";
 @infiles=();
 @filelist=();
 $out="_cosgen.c";
@@ -130,7 +130,11 @@ for my $file (@filelist) {
 # makgeneric
 print $outfh "\n";
 $gens =~ s/defgeneric/makgeneric/g;
-@gens = sort split "\n", $gens;
+
+# schwartzian transform for sort by field after ',\s'
+@gens = map { $_->[0] }
+        sort { $a->[1] cmp $b->[1] }
+        map { [$_, m/,\s(.*)$/] } split "\n", $gens;
 
 # Could use List::Util uniq here
 my %gdups = ();

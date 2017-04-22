@@ -25,7 +25,7 @@ use File::Path;
 
 # default settings
 $progname=basename($0);
-$cpp="ucpp -I."; # "cc -E -I."
+$cpp="cc -E -I."; # "ucpp -I.";
 @infiles=();
 @filelist=();
 $out="_cosprp.c";
@@ -65,7 +65,7 @@ END_OF_TEXT
 
 # parse arguments
 GetOptions(
-    "in=s" => \@filelist,
+    "in=s" => \@infiles,
     "out=s" => \$out,
     "cpp=s" => \$cpp,
     "help" => \&usage,
@@ -130,7 +130,11 @@ for my $file (@filelist) {
 # makproperty
 print $outfh "\n";
 $prps =~ s/defproperty/makproperty/g;
-@prps = sort split "\n", $prps;
+
+# schwartzian transform for sort by field after ',\s'
+@prps = map { $_->[0] }
+        sort { $a->[1] cmp $b->[1] }
+        map { [$_, m/,\s(.*)$/] } split "\n", $prps;
 
 # Could use List::Util uniq here
 my %pdups = ();
