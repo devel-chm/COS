@@ -116,7 +116,7 @@ for my $file (@filelist) {
     $gen =~ s/\b ( defgenericv* ) \s* \( ( [^;]* ) ; /\n\1(\2;\n/xg;
     $gen =~ s/\s*([()*])\s*/\1/g;  # remove whitespace around (, ), and *
     $gen =~ s/\s*,\s*/, /g;        # standardize whitespace around commas
-    $gen = join( "\n", grep { m/^ defgenericv? \( [^;]* ; $/x } split "\n", $gen) . "\n";
+    $gen = join( "\n", grep { m/^ defgenericv? \( [^;]* ; $/x } split "\n", $gen );
 
     # includes (looks like a hack so build everything works)
     if ( $gen ) {

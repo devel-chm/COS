@@ -138,7 +138,7 @@ GetOptions(
     "nm=s" =>    \$nm,
 ) or usage();
 
-$prjname = defined($modname) ? $modname : $prjname;
+$prjname = $modname ? $modname : $prjname;
 
 # add @infiles to @filelist
 foreach my $in ( @infiles ) {
