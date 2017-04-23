@@ -129,7 +129,7 @@ GetOptions(
     "in=s" =>    \@infiles,  # each file contains a list of filenames to process
     "out=s" =>   \$out,
     "prj=s" =>   \$prjname,
-    "mod=s" =>   \$modname, # need to handle prjname override
+    "mod=s" =>   \$modname,
     "dep=s" =>   \@modlist,
     "rmgen=s" => \@rmgen,
     "rmcls=s" => \@rmcls,
@@ -137,6 +137,8 @@ GetOptions(
     "rmtrc" =>   \$rmtrc,
     "nm=s" =>    \$nm,
 ) or usage();
+
+$prjname = defined($modname) ? $modname : $prjname;
 
 # add @infiles to @filelist
 foreach my $in ( @infiles ) {
@@ -161,15 +163,15 @@ if ( @filelist ) {
     $sym=qx($nm @filelist);  # make sure no \n stuff in @filelist
     @sym = split /\s*\n/, $sym;  # make clean list of lines no trailing whitespace
     @sym = grep { m/^_?cos_($prefix)_($token) D / } @sym;
-    @sym = map { s/ D.*$// } @sym;
-    @sym = map { s/^_cos/cos/ } @sym;
+    @sym = map { m/^(\S+) D.*$/ } @sym;
+    @sym = map { m/^_?(cos.*)$/ } @sym;
     @sym = uniqstr sort @sym;
     if ( @rmcls ) {
         $lnk=qx($nm @filelist);  # make sure no \n stuff
         @lnk = split /\s*\n/, $lnk;
         @lnk = grep { /^_?cos_l_($token) B / } @lnk;
-        @lnk = map { s/ B.*$// } @lnk;
-        @lnk = map { s/^_cos/cos/ } @lnk;
+        @lnk = map { m/^(\S+) B.*$/ } @lnk;
+        @lnk = map { m/^_?(cos.*)$/ } @lnk;
         @lnk = uniqstr sort @lnk;
     }
 }
@@ -180,7 +182,7 @@ if ( @rmgen ) {
 #       extract generics
         if ( $rmtrc ) {
             @gen = grep { m/^cos_g_($pat)$/ } @sym;
-            @gen = map { s/^cos_g_// } @gen;
+            @gen = map { m/^cos_g_(.*)$/ } @gen;
             $rmlst="$rmlst @gen";
         }
 #       remove generic pattern
@@ -202,12 +204,12 @@ if ( @rmcls ) {
 #       extract classes
         if ( $rmtrc ) {
             @cls = grep { m/^cos_c_($pat)$/ } @sym;
-            @cls = map { s/^cos_g_// } @cls;
+            @cls = map { m/^cos_g_(.*)$/ } @cls;
             $rmlst="$rmlst @cls";
         }
 #       extract subclasses
         @subcls = grep { m/^cos_l_($pat)__isSuperOf__/ } @lnk;
-        @subcls = map { s/^cos_l_${token}__isSuperOf__// } @subcls;
+        @subcls = map { m/^cos_l_${token}__isSuperOf__(.*)$/ } @subcls;
         $sublst = "$sublst @subcls";
 # DEBUG print STDERR "sublst: @sublst\n";
 #       remove link pattern
@@ -235,7 +237,7 @@ if ( @rmcls ) {
 # DEBUG print STDERR "pat: $pat\n";
 #       extract subclasses
         @subcls = grep { m/^cos_l_($pat)__isSuperOf__/ } @lnk;
-        @subcls = map { s/^cos_l_${token}__isSuperOf__// } @subcls;
+        @subcls = map { m/^cos_l_${token}__isSuperOf__(.*)$/ } @subcls;
         $sublst = "@subcls";
 # DEBUG print STDERR "sublst:\n$sublst\n";
 #       remove link pattern
