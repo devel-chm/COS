@@ -22,7 +22,12 @@
 use File::Basename;
 use Getopt::Long;
 use File::Path;
-use List::Util qw(uniqstr);
+use List::Util qw(uniqstr);  # TODO: Implement myself for portability
+                             #       That should make the perl versions of
+                             #       these utilities run with any core
+                             #       perl 5.8.x and above.  Maybe they
+                             #       could be used to replace the existing
+                             #       shell implementations
 
 # default settings
 $progname=basename($0);
