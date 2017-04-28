@@ -1,0 +1,16 @@
+# Created on: Fri 28 Apr 2017 04:58:24 PM 
+# Last saved: Fri 28 Apr 2017 05:18:35 PM 
+
+TODO-Cos PDL
+ - Update from I32/U32 sizes, indexing, strides, strings.. to 64bit
+ - Some variables that will need to be changed:
+   - capacity  U32  -> U64
+   - end       I32  -> I64
+   - extra     U32  -> U64
+   - index     I32  -> I64
+   - num       U32  -> U64 (for Iteration of functor, maybe U32 enough?)
+   - seq_size  U32  -> U64
+   - size      U32  -> U64
+   - start     I32  -> I64
+   - stride    I32  -> I64
+   - xxx_alloc(U32) -> U64 (Array, XxxVector, String)
