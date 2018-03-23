@@ -29,7 +29,8 @@ include $(cos)/prologue
 program := testCosBase
 
 # targets
-targets := release.run # debug.run
+targets := release.srun # debug.srun
+# targets := release.run # debug.run
 
 # files & modules
 sources := src/*.c

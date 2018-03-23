@@ -28,7 +28,8 @@ include $(cos)/prologue
 program := cos-ex01
 
 # targets
-targets := release.run # debug.run
+targets := debug.srun # release.srun
+#targets := release.run # debug.run
 
 # files & modules
 sources := *.c

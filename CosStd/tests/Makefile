@@ -28,7 +28,8 @@ include $(cos)/prologue
 program := testCosStd
 
 # targets
-targets := debug.run
+targets := debug.srun
+#targets := debug.run
 
 # files and modules
 sources := $(wildcard src/*.c)
