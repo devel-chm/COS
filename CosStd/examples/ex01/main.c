@@ -17,6 +17,7 @@
  * limitations under the License.
  */
 
+#include <cos/debug.h>
 #include <cos/Number.h>
 #include <cos/Functor.h>
 
@@ -31,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 
 useclass(AutoRelease);
 
@@ -114,8 +116,7 @@ int main(int argc, char *argv[])
 {
   I32 n = argc == 2 ? strtol(argv[1],0,0) : 1000000;
 
-  if (n <= 10)
-    cos_logmsg_setLevel(COS_LOGMSG_TRACE);
+  cos_logmsg_setLevel(COS_LOGMSG_TRALL);
 
   sum_rep(n);
   sum_itr(n);

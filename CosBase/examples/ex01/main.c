@@ -24,6 +24,9 @@ useclass(Stream, String);
 
 int main(void)
 {
+
+  cos_logmsg_setLevel(COS_LOGMSG_TRALL);
+
   OBJ strm = gnewWithStr(Stream, 0);
   OBJ str1 = gnewWithStr(String, "string one\n");
   OBJ str2 = gnewWithStr(String, "string two\n");
