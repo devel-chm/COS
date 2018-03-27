@@ -16,12 +16,15 @@ TODO-Cos PDL
    - xxx_alloc(U32) -> U64 (Array, XxxVector, String)
 
 Remove more shell dependencies in makefiles:
+ - Maybe make version with perl instead of shell commands?
  - CosBase/include/cos/mak/compile:63:     $_ $(DEP) $(INCLUDE) $(CPPFLAGS) $< | \
  - CosBase/include/cos/mak/install:101:         files=`sort -u $(INSTALLED_FILES)` ; \
  - CosBase/include/cos/mak/program:72:     $_ export $(SYSLIBPATH)=$$$(SYSLIBPATH)`echo "$(patsubst -L%,:%,$(LIBRARY))" | \
  - CosBase/include/cos/mak/program:73:     sed -e 's, :,:,g'` ; \
+ - Makefile that doesn't need gmake only?
 
 Debug broken functor problem
 
 Implement basic PDL operation with COS (how much can be done without functors?)
 
+Implement coscc to compile/relink... by calling the correct things.
