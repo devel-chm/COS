@@ -27,3 +27,11 @@ COS_PP_IF(0) (true, false)  // returns false---actually everything after true
 COS_PP_IF(1) (true, false)  // returns true or the first element of the tuple
 
 COS_PP_IF(0) (more, some, stuff)  // no error if not 0 or 1 or missing tuple, error for <2 elements
+
+COS_PP_ISBLANK_
+
+COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISBLANK_, ))
+
+#define COS_METHOD_TRACE 
+COS_METHOD_TRACE
+COS_PP_IFNDEF(COS_METHOD_TRACE)(COS_MTH_TRC_LOC,"/* no trace */")

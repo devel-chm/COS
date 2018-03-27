@@ -19,11 +19,11 @@ Directory contents:
 TO DO:
 - add location of file/concept
 - fill in missing explanations
+- seems to be ambiguity for IFDEF, IFNDEF which actually check for a macro with a value and not #undef
 - clarify docs
 
 DEFINITIONS:
  sequence - a list of comma separated tokens, e.g. a,b,c
  tuple    - a sequence within parentheses, e.g. (a,b,c)
             Limited to 63 elements (C99 limits)
-
 

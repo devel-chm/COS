@@ -47,8 +47,8 @@
 #define COS_PP_HANOI(n)                                 // tower of Hanoi moves for N disks (N<=20)
 #define COS_PP_ID(...)                                  // returns args
 #define COS_PP_IF(b)                                    // evaluate first element of the following tuple, otherwise evaluate the rest
-#define COS_PP_IFDEF(m)                                 // evaluate first element of the following tuple, otherwise evaluate the rest
-#define COS_PP_IFNDEF(m)                                // evaluate first element of the following tuple, otherwise evaluate the rest
+#define COS_PP_IFDEF(m)                                 // macro defined, not empty, eval first element of the following tuple, else eval the rest
+#define COS_PP_IFNDEF(m)                                // macro defined, but empty, eval first element of the following tuple, else eval the rest
 #define COS_PP_INCR(n)                                  // increment integer 0 <= n <= COS_PP_MAX_N, saturates at COS_PP_MAX_N
 #define COS_PP_ISALNUM(a)                               // [A-Za-z0-9] predicate function
 #define COS_PP_ISALPHA(a)                               // [A-Za-z] predicate function
