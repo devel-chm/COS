@@ -28,3 +28,8 @@ Debug broken functor problem
 Implement basic PDL operation with COS (how much can be done without functors?)
 
 Implement coscc to compile/relink... by calling the correct things.
+
+Improve build target detection/specification:
+- run, srun
+- debug, release, profile
+- maybe fixing srun is enough?
