@@ -2,12 +2,13 @@
 .project
 .cproject
 
-CYGWIN_NT-6.1
-Darwin
-Default
-FreeBSD
-Linux
-SunOS
+CYGWIN_NT-10.1/
+CYGWIN_NT-6.1/
+Darwin/
+Default/
+FreeBSD/
+Linux/
+SunOS/
 
 doc/api
 INSTALLED_FILES
