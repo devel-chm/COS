@@ -22,18 +22,18 @@
 #define COS_PP_ARG9(a, b, c, d, e, f, g, h, i, ...)     // arg #9 of sequence
 #define COS_PP_BOOL(a)                                  // return 1 if 'a' is non-zero, including numbers and tokens, 0 otherwise
 #define COS_PP_BRACE(...)                               // { around ... }
-#define COS_PP_CAT(a, ...)                              // ??
-#define COS_PP_CAT3(a, b, ...)                          // ??
-#define COS_PP_CAT4(a, b, c, ...)                       // ??
-#define COS_PP_CAT_NARG(a, ...)                         // ??
+#define COS_PP_CAT(a, ...)                              // concatenate arg1 and rest
+#define COS_PP_CAT3(a, b, ...)                          // concatenate arg1, arg2, and rest
+#define COS_PP_CAT4(a, b, c, ...)                       // concatenate arg1, arg2, arg3, and rest
+#define COS_PP_CAT_NARG(a, ...)                         // concatenate arg1 and the number of remaining args
 #define COS_PP_COMMA()                                  // ,
 #define COS_PP_CONCAT(T1, T2)                           // concat tuples T1 and T2
 #define COS_PP_CONS(a, T)                               // concat element a in front of tuple
 #define COS_PP_DECR(n)                                  // decrement integer 0 <= n <= COS_PP_MAX_N, saturates at zero
 #define COS_PP_DROP(n, T)                               // drop first n < length(T) elements of tuple
-#define COS_PP_DUP(n, ...)                              // ??
-#define COS_PP_DUPSEQ(n, ...)                           // sequence of n elements from duplication of va_args elements
-#define COS_PP_DUPSEQ_N(...)                            // ??
+#define COS_PP_DUP(n, ...)                              // repeat ... n times in a row (white space between)
+#define COS_PP_DUPSEQ(n, ...)                           // sequence of length n elements from comma separated duplication of va_args elements
+#define COS_PP_DUPSEQ_N(...)                            // same as COS_PP_DUPSEQ(63, ...)
 #define COS_PP_EAT(...)                                 // replaces args by /* nothing */
 #define COS_PP_ELEM(n, T)                               // elements indexed accessor in range 1..length(T)
 #define COS_PP_EMPTY()                                  // expands to /* empty */
@@ -86,10 +86,10 @@
 #define COS_PP_NOARG(...)                               // return 1 if it has no 'effective' argument, 0 otherwise
 #define COS_PP_NOT(b)                                   // evaluate first element of the following tuple, otherwise evaluate the rest
 #define COS_PP_NUMSEQ(n, ...)                           // numbered sequence of n elements from duplication of va_args elements
-#define COS_PP_NUMSEQ_N(...)                            // ??
+#define COS_PP_NUMSEQ_N(...)                            // same as COS_PP_NUMSEQ(63,...), with one arg you get arg1, arg2, ..., arg63 out
 #define COS_PP_OR(b1, b2)                               // evaluate first element of the following tuple, otherwise evaluate the rest
 #define COS_PP_ORD(a)                                   // convert code to base64 ord
-#define COS_PP_PAIR(a, ...)                             // ??
+#define COS_PP_PAIR(a, ...)                             // extract arg1 and rest and place adjacent (remove comma)
 #define COS_PP_PART(...)                                // __VA_ARGS__,
 #define COS_PP_PPART(...)                               // (__VA_ARGS__),
 #define COS_PP_RCONS(T, a)                              // concat element a at the end of tuple (reverse CONS)
@@ -97,7 +97,7 @@
 #define COS_PP_REST(a, ...)                             // 2..n args
 #define COS_PP_REV(T)                                   // reverse tuple T
 #define COS_PP_REVSEQ(n, ...)                           // reverse numbered sequence of n elements from duplication of va_args elements
-#define COS_PP_REVSEQ_N(...)                            // ??
+#define COS_PP_REVSEQ_N(...)                            // same as COS_PP_REVSEQ(63,...)
 #define COS_PP_RPAR()                                   // )
 #define COS_PP_RTAKE(n, T)                              // take last n <= length(T) elements of tuple
 #define COS_PP_SCANL(T, a0, F)                          // scan left elements of tuple using function F(a,b)

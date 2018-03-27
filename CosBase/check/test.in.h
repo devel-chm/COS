@@ -35,3 +35,12 @@ COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISBLANK_, ))
 #define COS_METHOD_TRACE 
 COS_METHOD_TRACE
 COS_PP_IFNDEF(COS_METHOD_TRACE)(COS_MTH_TRC_LOC,"/* no trace */")
+
+// COS_PP_CAT_NARG(hello_,a,b,c,3)
+
+COS_PP_NUMSEQ(63,a) // produces a1,a2,...,a63
+
+COS_PP_NUMSEQ_N(a) // produces a1,a2,...,a63
+
+// COS_PP_NARG(COS_PP_PAIR(COS_PP_REST,(COS_PP_DUP(5,COS_PP_DUP(3,,)))))
+
