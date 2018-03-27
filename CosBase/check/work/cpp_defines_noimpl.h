@@ -1,0 +1,105 @@
+#define COS_PP_1ARG(...) COS_PP_NOT(COS_PP_NOARG(__VA_ARGS__))
+#define COS_PP_1ST(T) COS_PP_PAIR(COS_PP_ARG1,(COS_PP_ID T,))
+#define COS_PP_2ARGS(...) COS_PP_NOT(COS_PP_ISONE(COS_PP_NARG(__VA_ARGS__)))
+#define COS_PP_2ND(T) COS_PP_PAIR(COS_PP_ARG2,(COS_PP_ID T,))
+#define COS_PP_3RD(T) COS_PP_PAIR(COS_PP_ARG3,(COS_PP_ID T,))
+#define COS_PP_4TH(T) COS_PP_PAIR(COS_PP_ARG4,(COS_PP_ID T,))
+#define COS_PP_5TH(T) COS_PP_PAIR(COS_PP_ARG5,(COS_PP_ID T,))
+#define COS_PP_6TH(T) COS_PP_PAIR(COS_PP_ARG6,(COS_PP_ID T,))
+#define COS_PP_7TH(T) COS_PP_PAIR(COS_PP_ARG7,(COS_PP_ID T,))
+#define COS_PP_8TH(T) COS_PP_PAIR(COS_PP_ARG8,(COS_PP_ID T,))
+#define COS_PP_9TH(T) COS_PP_PAIR(COS_PP_ARG9,(COS_PP_ID T,))
+#define COS_PP_ADD(m, n) COS_PP_1ST(COS_PP_2ND(COS_PP_SPLIT(n, COS_PP_2ND(COS_PP_SPLIT(m,(0,COS_PP_NUMSEQ_N()))))))
+#define COS_PP_AND(b1, b2) COS_PP_CAT3_(COS_PP_AND_,b1,b2)()
+#define COS_PP_ARG1(a, ...) a
+#define COS_PP_ARG2(a, b, ...) b
+#define COS_PP_ARG3(a, b, c, ...) c
+#define COS_PP_ARG4(a, b, c, d, ...) d
+#define COS_PP_ARG5(a, b, c, d, e, ...) e
+#define COS_PP_ARG6(a, b, c, d, e, f, ...) f
+#define COS_PP_ARG7(a, b, c, d, e, f, g, ...) g
+#define COS_PP_ARG8(a, b, c, d, e, f, g, h, ...) h
+#define COS_PP_ARG9(a, b, c, d, e, f, g, h, i, ...) i
+#define COS_PP_BOOL(a) COS_PP_NOT(COS_PP_OR(COS_PP_ISZERO(a),COS_PP_ISBLANK(a)))
+#define COS_PP_BRACE(...) { __VA_ARGS__ }
+#define COS_PP_CAT(a, ...) COS_PP_CAT_ (a, __VA_ARGS__)
+#define COS_PP_CAT3(a, b, ...) COS_PP_CAT3_(a,b, __VA_ARGS__)
+#define COS_PP_CAT4(a, b, c, ...) COS_PP_CAT4_(a,b,c,__VA_ARGS__)
+#define COS_PP_CAT_NARG(a, ...) COS_PP_CAT(a,COS_PP_NARG(__VA_ARGS__))
+#define COS_PP_COMMA() ,
+#define COS_PP_CONCAT(T1, T2) (COS_PP_ID T1,COS_PP_ID T2)
+#define COS_PP_CONS(a, T) (a,COS_PP_ID T)
+#define COS_PP_DECR(n) COS_PP_1ST(COS_PP_2ND(COS_PP_SPLIT(n,(0,0,COS_PP_NUMSEQ_N()))))
+#define COS_PP_DROP(n, T) COS_PP_2ND(COS_PP_SPLIT(n,T))
+#define COS_PP_DUP(n, ...) COS_PP_CAT_(COS_PP_DUP_,n)(__VA_ARGS__)
+#define COS_PP_DUPSEQ(n, ...) COS_PP_SEQ(COS_PP_TAKE(n,(COS_PP_DUPSEQ_N(__VA_ARGS__))))
+#define COS_PP_DUPSEQ_N(...) COS_PP_DUPSEQ_N_(__VA_ARGS__)
+#define COS_PP_EAT(...)
+#define COS_PP_ELEM(n, T) COS_PP_1ST(COS_PP_2ND(COS_PP_SPLIT(n,(,COS_PP_ID T))))
+#define COS_PP_EMPTY()
+#define COS_PP_EQ(m, n) COS_PP_AND(COS_PP_GE(m,n),COS_PP_GE(n,m))
+#define COS_PP_EVAL(n, T, F) COS_PP_CAT_(COS_PP_EVAL_,n)(T,F)
+#define COS_PP_FILTER(T, PF) COS_PP_RES1_(COS_PP_EVAL(COS_PP_LEN(T), ((),(COS_PP_ID T,),PF),COS_PP_FILTER_0))
+#define COS_PP_FOLDL(T, a0, F) COS_PP_1ST(COS_PP_EVAL(COS_PP_LEN(T), (a0,(COS_PP_ID T,),F),COS_PP_FOLDL_0))
+#define COS_PP_FOLDR(T, a0, F) COS_PP_1ST(COS_PP_EVAL(COS_PP_LEN(T), (a0,(COS_PP_SEQ(COS_PP_REV(T)),),F),COS_PP_FOLDR_0))
+#define COS_PP_GE(m, n) COS_PP_ISTUPLE(COS_PP_1ST(COS_PP_2ND( COS_PP_SPLIT(n,((),COS_PP_DUPSEQ(m,()),COS_PP_DUPSEQ_N())) )))
+#define COS_PP_GT(m, n) COS_PP_NOT(COS_PP_GE(n,m))
+#define COS_PP_ID(...) __VA_ARGS__
+#define COS_PP_IF(b) COS_PP_CAT_(COS_PP_IF_,b)
+#define COS_PP_IFDEF(m) COS_PP_IF(COS_PP_NOT(COS_PP_ISBLANK(m)))
+#define COS_PP_IFNDEF(m) COS_PP_IF(COS_PP_ISBLANK(m))
+#define COS_PP_INCR(n) COS_PP_1ST(COS_PP_2ND(COS_PP_SPLIT(n,(COS_PP_NUMSEQ_N(),COS_PP_MAX_N))))
+#define COS_PP_ISBLANK(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISBLANK_,a))
+#define COS_PP_ISBOOL(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISBOOL_,a))
+#define COS_PP_ISNTUPLE(...) COS_PP_NOT(COS_PP_ISTUPLE(__VA_ARGS__))
+#define COS_PP_ISNZERO(a) COS_PP_ISNTUPLE(COS_PP_CAT_(COS_PP_ISZERO_,a))
+#define COS_PP_ISONE(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISONE_,a))
+#define COS_PP_ISTOKEN(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_TOKEN_,a))
+#define COS_PP_ISTUPLE(...) COS_PP_PAIR(COS_PP_ARG1, (COS_PP_CAT(COS_PP_ISTUPLE_RET_,COS_PP_ISTUPLE_TST_ __VA_ARGS__)))
+#define COS_PP_ISTWO(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISTWO_,a))
+#define COS_PP_ISZERO(a) COS_PP_ISTUPLE(COS_PP_CAT_(COS_PP_ISZERO_,a))
+#define COS_PP_LAST(T) COS_PP_1ST(COS_PP_REV(T))
+#define COS_PP_LE(m, n) COS_PP_GE(n,m)
+#define COS_PP_LEN(T) COS_PP_NARG T
+#define COS_PP_LPAR() (
+#define COS_PP_LT(m, n) COS_PP_NOT(COS_PP_GE(m,n))
+#define COS_PP_MAP(T, F) COS_PP_RES_(COS_PP_EVAL(COS_PP_LEN(T), ((),(COS_PP_ID T,),F),COS_PP_MAP_0))
+#define COS_PP_MAP2(T1, T2, F) COS_PP_RES_(COS_PP_EVAL(COS_PP_LEN(T1), ((),(COS_PP_ID T1,),(COS_PP_ID T2,),F),COS_PP_MAP2_0))
+#define COS_PP_MAP3(T1, T2, T3, F) COS_PP_RES_(COS_PP_EVAL(COS_PP_LEN(T1), ((),(COS_PP_ID T1,),(COS_PP_ID T2,),(COS_PP_ID T3,),F),COS_PP_MAP3_0))
+#define COS_PP_MAX(m, n) COS_PP_IF(COS_PP_GE(m,n))(m,n)
+#define COS_PP_MAX_N 63
+#define COS_PP_MIN(m, n) COS_PP_IF(COS_PP_GE(m,n))(n,m)
+#define COS_PP_MUL(m, n) COS_PP_IF(COS_PP_OR(COS_PP_ISZERO(m),COS_PP_ISZERO(n)))(0, COS_PP_NARG(COS_PP_PAIR(COS_PP_REST,(COS_PP_DUP(m,COS_PP_DUP(n,,))))))
+#define COS_PP_NARG(...) COS_PP_NARG_(__VA_ARGS__,COS_PP_REVSEQ_N(),)
+#define COS_PP_NE(m, n) COS_PP_NOT(COS_PP_EQ(m,n))
+#define COS_PP_NOARG(...) COS_PP_AND(COS_PP_ISTUPLE(__VA_ARGS__ ()), COS_PP_NOT(COS_PP_ISTUPLE(__VA_ARGS__)))
+#define COS_PP_NOT(b) COS_PP_CAT_(COS_PP_NOT_,b)()
+#define COS_PP_NUMSEQ(n, ...) COS_PP_SEQ(COS_PP_TAKE(n,(COS_PP_NUMSEQ_N(__VA_ARGS__))))
+#define COS_PP_NUMSEQ_N(...) COS_PP_NUMSEQ_N_(__VA_ARGS__)
+#define COS_PP_OR(b1, b2) COS_PP_CAT3_(COS_PP_OR_,b1,b2)()
+#define COS_PP_PAIR(a, ...) a __VA_ARGS__
+#define COS_PP_PART(...) __VA_ARGS__,
+#define COS_PP_PPART(...) (__VA_ARGS__),
+#define COS_PP_RCONS(T, a) (COS_PP_ID T,a)
+#define COS_PP_RDROP(n, T) COS_PP_REV(COS_PP_DROP(n,COS_PP_REV(T)))
+#define COS_PP_REST(a, ...) __VA_ARGS__
+#define COS_PP_REV(T) COS_PP_CAT(COS_PP_REV_,COS_PP_NARG T) T
+#define COS_PP_REVSEQ(n, ...) COS_PP_SEQ(COS_PP_TAKE(n,(COS_PP_REVSEQ_N(__VA_ARGS__))))
+#define COS_PP_REVSEQ_N(...) COS_PP_REVSEQ_N_(__VA_ARGS__)
+#define COS_PP_RPAR() )
+#define COS_PP_RTAKE(n, T) COS_PP_REV(COS_PP_TAKE(n,COS_PP_REV(T)))
+#define COS_PP_SCANL(T, a0, F) COS_PP_RRES_(COS_PP_EVAL(COS_PP_LEN(T), ((a0,),(COS_PP_ID T,),F),COS_PP_SCANL_0))
+#define COS_PP_SCANR(T, a0, F) COS_PP_REV(COS_PP_RRES_(COS_PP_EVAL(COS_PP_LEN(T), ((a0,),(COS_PP_SEQ(COS_PP_REV(T)),),F),COS_PP_SCANR_0)))
+#define COS_PP_SEP(T) COS_PP_FOLDL(T,,COS_PP_PAIR)
+#define COS_PP_SEPWITH(T, s) COS_PP_IF(COS_PP_2ARGS(COS_PP_ID T))( COS_PP_ARG1 T COS_PP_SEP( COS_PP_MAP2((COS_PP_REST T),(COS_PP_DUPSEQ_N(s)),COS_PP_SWAP)), COS_PP_ID T)
+#define COS_PP_SEQ(T) COS_PP_ID T
+#define COS_PP_SPLIT(n, T) COS_PP_CAT_(COS_PP_SPLIT_,n) T
+#define COS_PP_STR(...) COS_PP_STR_(__VA_ARGS__)
+#define COS_PP_STR1(a, ...) #a
+#define COS_PP_STR2(a, b, ...) #b
+#define COS_PP_STR3(a, b, c, ...) #c
+#define COS_PP_SUB(m, n) COS_PP_IF(COS_PP_ISZERO(m))(0, COS_PP_1ST(COS_PP_2ND(COS_PP_SPLIT(n,COS_PP_RCONS(COS_PP_REV( COS_PP_1ST(COS_PP_SPLIT(m,(COS_PP_NUMSEQ_N(),)))),0)))))
+#define COS_PP_SWAP(a, ...) __VA_ARGS__ a
+#define COS_PP_TAKE(n, T) COS_PP_1ST(COS_PP_SPLIT(n,(COS_PP_ID T,)))
+#define COS_PP_TUPLE(...) (__VA_ARGS__)
+#define COS_PP_XOR(b1, b2) COS_PP_CAT3_(COS_PP_XOR_,b1,b2)()
