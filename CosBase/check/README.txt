@@ -27,3 +27,19 @@ DEFINITIONS:
  tuple    - a sequence within parentheses, e.g. (a,b,c)
             Limited to 63 elements (C99 limits)
 
+
+NOTES:
+
+* Using indent to beautify the .h files:  indent -c57 -nut
+  -c57 lines up comments at end of line on column 57
+  -nut use spaces instead of tabs
+
+* Test framework needs:
+  - log file of input, processing, output and errors
+  - use temp files with numbers for input and output
+  - use perl to generate the test code and log the inputs to ucpp
+
+* UCPP args:
+  -I COS_include_directory
+  -l # no #line outputs
+  -o outfile
