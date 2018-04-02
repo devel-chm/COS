@@ -20,7 +20,7 @@
 #define COS_PP_ARG7(a, b, c, d, e, f, g, ...)           // arg #7 of sequence
 #define COS_PP_ARG8(a, b, c, d, e, f, g, h, ...)        // arg #8 of sequence
 #define COS_PP_ARG9(a, b, c, d, e, f, g, h, i, ...)     // arg #9 of sequence
-#define COS_PP_BOOL(a)                                  // return 1 if 'a' is non-zero, including numbers and tokens, 0 otherwise
+#define COS_PP_BOOL(a)                                  // return 1 if 'a' is non-zero, including numbers and tokens, 0 otherwise ("to bool")
 #define COS_PP_BRACE(...)                               // { around ... }
 #define COS_PP_CAT(a, ...)                              // concatenate arg1 and rest
 #define COS_PP_CAT3(a, b, ...)                          // concatenate arg1, arg2, and rest
@@ -28,7 +28,7 @@
 #define COS_PP_CAT_NARG(a, ...)                         // concatenate arg1 and the number of remaining args
 #define COS_PP_COMMA()                                  // ,
 #define COS_PP_CONCAT(T1, T2)                           // concat tuples T1 and T2
-#define COS_PP_CONS(a, T)                               // concat element a in front of tuple
+#define COS_PP_CONS(a, T)                               // return tuple formed by concat element a in front of input tuple
 #define COS_PP_DECR(n)                                  // decrement integer 0 <= n <= COS_PP_MAX_N, saturates at zero
 #define COS_PP_DROP(n, T)                               // drop first n < length(T) elements of tuple
 #define COS_PP_DUP(n, ...)                              // repeat ... n times in a row (white space between)
