@@ -38,7 +38,7 @@
 #define COS_PP_ELEM(n, T)                               // elements indexed accessor in range 1..length(T)
 #define COS_PP_EMPTY()                                  // expands to /* empty */
 #define COS_PP_EQ(m, n)                                 // m == n where 0 <= m,n <= 63
-#define COS_PP_EVAL(n, T, F)                            // eval function F() up to n times on tuple (run in O(n))
+#define COS_PP_EVAL(n, T, F)                            // eval function F() up to n times on tuple (run in O(n)) (see FOLD, MAP, and FILTER routines)
 #define COS_PP_FILTER(T, PF)                            // filter elements of tuple using the predicate function PF(A)
 #define COS_PP_FOLDL(T, a0, F)                          // fold left elements of tuple using function F(a,b)
 #define COS_PP_FOLDR(T, a0, F)                          // fold right elements of tuple using function F(a,b)
